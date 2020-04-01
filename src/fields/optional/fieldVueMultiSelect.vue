@@ -33,6 +33,7 @@
 		:max-height="selectOptions.maxHeight",
 		:show-pointer="selectOptions.showPointer",
 		@input="updateSelected",
+		@blur="onBlur"
 		@select="onSelect",
 		@remove="onRemove",
 		@search-change="onSearchChange",

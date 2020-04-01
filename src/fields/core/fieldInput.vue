@@ -135,11 +135,7 @@ export default {
 			}
 			this.value = value;
 		},
-		onBlur() {
-			if (isFunction(this.debouncedFormatFunc)) {
-				this.debouncedFormatFunc.flush();
-			}
-		}
+
 	},
 
 	mounted() {
