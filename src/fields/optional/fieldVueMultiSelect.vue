@@ -39,6 +39,7 @@
 		@tag="addTag",
 		@open="onOpen",
 		@close="onClose",
+		@blur="onDataAccept",
 		:option-height="selectOptions.optionHeight",
 	)
 		span(slot="noResult").

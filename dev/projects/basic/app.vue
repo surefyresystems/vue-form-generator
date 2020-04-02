@@ -48,8 +48,7 @@
                 wrapper: {
                   "data-target": "input"
                 }
-              },
-              onBlur: () => {console.log("aaaa");}
+              }
             },
             {
               type: "checkbox",
