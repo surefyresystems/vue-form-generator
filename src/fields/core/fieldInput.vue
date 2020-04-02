@@ -64,6 +64,9 @@ export default {
 		}
 	},
 	methods: {
+      onBlur() {
+        this.$emit("blur");
+      },
 		formatValueToModel(value) {
 			if (value != null) {
 				switch (this.schema.inputType.toLowerCase()) {

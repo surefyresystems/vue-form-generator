@@ -1,5 +1,5 @@
 <template lang="pug">
-	select.form-control(v-model="value", @blur="onBlur(value)", :disabled="disabled", :name="schema.inputName", :id="getFieldID(schema)", :class="schema.fieldClasses", v-attributes="'input'")
+	select.form-control(v-model="value", @blur="onBlur", :disabled="disabled", :name="schema.inputName", :id="getFieldID(schema)", :class="schema.fieldClasses", v-attributes="'input'")
 		option(v-if="!selectOptions.hideNoneSelectedText", :disabled="schema.required", :value="null") {{ selectOptions.noneSelectedText || "&lt;Nothing selected&gt;" }}
 
 		template(v-for="item in items")
@@ -30,6 +30,9 @@ export default {
 	},
 
 	methods: {
+      onBlur() {
+        this.$emit("blur");
+      },
 		formatValueToField(value) {
 			if (isNil(value)) {
 				return null;

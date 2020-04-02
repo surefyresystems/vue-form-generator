@@ -71,12 +71,6 @@ export default {
 	},
 
 	methods: {
-		onBlur() {
-			if (isFunction(this.debouncedFormatFunc)) {
-				this.debouncedFormatFunc.flush();
-			}
-			this.$emit('blur');
-		},
 		validate(calledParent) {
 			this.clearValidationErrors();
 			let validateAsync = objGet(this.formOptions, "validateAsync", false);
