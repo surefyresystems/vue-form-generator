@@ -5,7 +5,7 @@
 		:type="inputType",
 		:value="value",
 		@input="onInput",
-		@blur="onBlur",
+		@blur="schema.onBlur || null",
 		:class="schema.fieldClasses",
 		@change="schema.onChange || null",
 		:disabled="disabled",
