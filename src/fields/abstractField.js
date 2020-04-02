@@ -1,6 +1,6 @@
-import { get as objGet, forEach, isFunction, isString, isArray, debounce, uniqueId, uniq as arrayUniq } from "lodash";
+import {get as objGet, forEach, isFunction, isString, isArray, debounce, uniqueId, uniq as arrayUniq} from "lodash";
 import validators from "../utils/validators";
-import { slugifyFormID } from "../utils/schema";
+import {slugifyFormID} from "../utils/schema";
 
 function convertValidator(validator) {
 	if (isString(validator)) {
@@ -144,7 +144,11 @@ export default {
 			}
 			this.debouncedValidateFunc();
 		},
-
+		onBlur() {
+			if (isFunction(this.schema.onBlur)) {
+				this.schema.onBlur.call(this.model, this.value, this.schema);
+			}
+		},
 		updateModelValue(newValue, oldValue) {
 			let changed = false;
 			if (isFunction(this.schema.set)) {
