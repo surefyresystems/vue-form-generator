@@ -146,7 +146,6 @@ export default {
 		},
 		onBlur() {
 			if (isFunction(this.schema.onBlur)) {
-				console.log("blurred from vue form generator");
 				this.schema.onBlur.call(this, this.model, this.value, this.schema);
 			}
 		},
