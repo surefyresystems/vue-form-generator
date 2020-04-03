@@ -146,7 +146,6 @@ export default {
 			this.debouncedValidateFunc();
 		},
 		onDataAccept() {
-			this.$emit("data-accepted", this.value, this.modelChanged);
 			if (isFunction(this.schema.onDataAccept)) {
 				// Passing the model, the current value, schema and if model changed or not (dirty)
 				this.schema.onDataAccept.call(this, this.model, this.value, this.schema, this.modelChanged);
