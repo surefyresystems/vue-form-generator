@@ -1,5 +1,5 @@
 <template lang="pug">
-	input.form-control(type="text", :value="value", :autocomplete="schema.autocomplete", :disabled="disabled", :placeholder="schema.placeholder", :readonly="schema.readonly", :name="schema.inputName", :id="getFieldID(schema)")
+	input.form-control(type="text", @keyup.enter="onDataAccept", @onBlur="onDataAccept", :value="value", :autocomplete="schema.autocomplete", :disabled="disabled", :placeholder="schema.placeholder", :readonly="schema.readonly", :name="schema.inputName", :id="getFieldID(schema)")
 </template>
 
 <script>

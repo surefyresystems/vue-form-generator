@@ -1,6 +1,6 @@
 <template lang="pug">
 	textarea.form-control(
-		v-model="value",
+		v-model="value"
 		:id="getFieldID(schema)",
 		:class="schema.fieldClasses",
 		:disabled="disabled",
@@ -11,15 +11,17 @@
 		:required="schema.required",
 		:rows="schema.rows || 2",
 		:name="schema.inputName",
+		@blur="onDataAccept",
 		v-attributes="'input'")
+
 </template>
 
 <script>
-import abstractField from "../abstractField";
+  import abstractField from "../abstractField";
 
-export default {
-	mixins: [abstractField]
-};
+  export default {
+    mixins: [abstractField]
+  };
 </script>
 
 

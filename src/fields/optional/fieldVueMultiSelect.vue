@@ -40,6 +40,7 @@
 		@open="onOpen",
 		@close="onClose",
 		@blur="onDataAccept",
+		@keyup.enter="onDataAccept",
 		:option-height="selectOptions.optionHeight",
 	)
 		span(slot="noResult").
