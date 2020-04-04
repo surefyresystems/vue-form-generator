@@ -1,6 +1,6 @@
-import {get as objGet, forEach, isFunction, isString, isArray, debounce, uniqueId, uniq as arrayUniq} from "lodash";
+import { get as objGet, forEach, isFunction, isString, isArray, debounce, uniqueId, uniq as arrayUniq } from "lodash";
 import validators from "../utils/validators";
-import {slugifyFormID} from "../utils/schema";
+import { slugifyFormID } from "../utils/schema";
 
 function convertValidator(validator) {
 	if (isString(validator)) {

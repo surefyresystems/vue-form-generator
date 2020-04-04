@@ -153,9 +153,7 @@ export default {
 		onModelUpdated(newVal, schema) {
 			this.$emit("model-updated", newVal, schema);
 		},
-		onDataAccepted(value, modelChanged) {
-			this.$emit("data-accepted", value, modelChanged);
-		},
+
 		// Validating the model properties
 		validate(isAsync = null) {
 			if (isAsync === null) {
