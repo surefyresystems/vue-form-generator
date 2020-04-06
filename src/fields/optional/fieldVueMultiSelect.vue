@@ -103,6 +103,7 @@ export default {
 			// console.log("onOpen", id);
 		},
 		onClose(/* value, id */) {
+			this.onDataAccept();
 			// console.log("onClose", value, id);
 		}
 	},

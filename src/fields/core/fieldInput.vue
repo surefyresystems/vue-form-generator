@@ -6,6 +6,7 @@
 		:value="value",
 		@input="onInput",
 		@blur="onBlur",
+		@keyup.enter="onBlur",
 		:class="schema.fieldClasses",
 		@change="schema.onChange || null",
 		:disabled="disabled",
@@ -139,6 +140,7 @@ export default {
 			if (isFunction(this.debouncedFormatFunc)) {
 				this.debouncedFormatFunc.flush();
 			}
+			this.onDataAccept();
 		}
 	},
 

@@ -11,6 +11,7 @@
 		:required="schema.required",
 		:rows="schema.rows || 2",
 		:name="schema.inputName",
+		@blur="onDataAccept",
 		v-attributes="'input'")
 </template>
 

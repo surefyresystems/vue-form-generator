@@ -31,7 +31,8 @@ export default {
 		return {
 			errors: [],
 			debouncedValidateFunc: null,
-			debouncedFormatFunc: null
+			debouncedFormatFunc: null,
+			modelChanged: false // if the model has changed, set the dirty bit to true
 		};
 	},
 
@@ -144,7 +145,12 @@ export default {
 			}
 			this.debouncedValidateFunc();
 		},
-
+		onDataAccept() {
+			if (isFunction(this.schema.onDataAccept)) {
+				// Passing the model, the current value, schema and if model changed or not (dirty)
+				this.schema.onDataAccept.call(this, this.model, this.value, this.schema, this.modelChanged);
+			}
+		},
 		updateModelValue(newValue, oldValue) {
 			let changed = false;
 			if (isFunction(this.schema.set)) {
@@ -156,6 +162,7 @@ export default {
 			}
 
 			if (changed) {
+				this.modelChanged = true;
 				this.$emit("model-updated", newValue, this.schema.model);
 
 				if (isFunction(this.schema.onChanged)) {
