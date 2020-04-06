@@ -6,7 +6,7 @@
 		:value="value",
 		@input="onInput",
 		@blur="onBlur",
-		@keyup.enter="onDataAccept",
+		@keyup.enter="onBlur",
 		:class="schema.fieldClasses",
 		@change="schema.onChange || null",
 		:disabled="disabled",
