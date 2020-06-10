@@ -38,7 +38,7 @@
 		:width="schema.width",
 		:files="schema.files"
 		v-attributes="'input'")
-	span.helper(v-if="schema.inputType.toLowerCase() === 'color' || schema.inputType.toLowerCase() === 'range'") {{ value }}
+	span.helper(v-if="schema.inputType.toLowerCase() === 'color'") {{ value }}
 </template>
 
 <script>
