@@ -32,6 +32,10 @@ export default {
 	name: "form-group",
 	components: fieldComponents,
 	mixins: [formMixin],
+
+	beforeDestroy() {
+		this.onModelUpdated("", this.field.model);
+	},
 	props: {
 		vfg: {
 			type: Object,

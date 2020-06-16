@@ -73,7 +73,6 @@ export default {
 					if (!this.multiple || field.multi === true) res.push(field);
 				});
 			}
-
 			return res;
 		},
 		groups() {
