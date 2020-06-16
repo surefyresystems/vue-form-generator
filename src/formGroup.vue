@@ -32,9 +32,11 @@ export default {
 	name: "form-group",
 	components: fieldComponents,
 	mixins: [formMixin],
-
 	beforeDestroy() {
-		this.onModelUpdated("", this.field.model);
+		// if deleteDataOnHide is true, we remove the field and data from the model once the field is hidden.
+		if (this.options.deleteDataOnHide) {
+			this.$delete(this.model, this.field.model);
+		}
 	},
 	props: {
 		vfg: {
