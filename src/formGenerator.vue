@@ -123,11 +123,31 @@ export default {
 	methods: {
 		// Get visible prop of field
 		fieldVisible(field) {
-			if (isFunction(field.visible)) return field.visible.call(this, this.model, field, this);
+			let visible = field.visible;
 
-			if (isNil(field.visible)) return true;
+			if (isFunction(field.visible)) {
+				visible = field.visible.call(this, this.model, field, this);
+			}
 
-			return field.visible;
+			if (isNil(field.visible)) {
+				visible = true;
+			}
+
+			// if the schema formOptions includes a deleteDataOnHide attribute:
+			// 1. we check if visibility became false on the field. If so, delete the model from that field
+			// 2. if became visible and we have an initial, we can set that initial back if the field not in model
+			if (this.options.deleteDataOnHide) {
+				if (!visible) {
+					this.$delete(this.model, field.model);
+				}
+				else if (visible && field.initial) {
+					if (!(field.model in this.model)) {
+						this.$set(this.model, field.model, field.initial);
+					}
+				}
+			}
+
+			return visible;
 		},
 
 		// Child field executed validation
