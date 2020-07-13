@@ -15,6 +15,7 @@ div.vue-form-generator(v-if='schema != null')
 import { get as objGet, forEach, isFunction, isNil, isArray } from "lodash";
 import formMixin from "./formMixin.js";
 import formGroup from "./formGroup.vue";
+import {vueSet, vueDelete} from "./utils/vueUtils";
 
 export default {
 	name: "formGenerator",
@@ -132,17 +133,17 @@ export default {
 			if (isNil(field.visible)) {
 				visible = true;
 			}
-
 			// if the schema formOptions includes a deleteDataOnHide attribute:
 			// 1. we check if visibility became false on the field. If so, delete the model from that field
 			// 2. if became visible and we have an initial, we can set that initial back if the field not in model
 			if (this.options.deleteDataOnHide) {
 				if (!visible) {
-					this.$delete(this.model, field.model);
+					vueDelete(this.model, field.model);
 				}
 				else if (visible && field.initial) {
-					if (!(field.model in this.model)) {
-						this.$set(this.model, field.model, field.initial);
+					// if field model doesn't exist in the model, update the initial
+					if (!(objGet(this.model, field.model, false))) {
+						vueSet(this.model, field.model, field.initial);
 					}
 				}
 			}
