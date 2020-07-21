@@ -133,19 +133,12 @@ export default {
 			if (isNil(field.visible)) {
 				visible = true;
 			}
-			// if the schema formOptions includes a deleteDataOnHide attribute:
-			// 1. we check if visibility became false on the field. If so, delete the model from that field
-			// 2. if became visible and we have an initial, we can set that initial back if the field not in model
 			if (visible) {
-				if (("initial" in field)) {
-					// if function, set the initial always. Otherwise only set if we don't have the field.model in model
-					if (isFunction(field.initial)) {
-						vueSet(this.model, field.model, field.initial.call(this, this.model, field, this));
-					} else if (objGet(this.model, field.model) === undefined) {
-						vueSet(this.model, field.model, field.initial);
-					}
+				if (("initial" in field) && (objGet(this.model, field.model) === undefined)) {
+					vueSet(this.model, field.model, field.initial);
 				}
 			}
+
 			return visible;
 		},
 
