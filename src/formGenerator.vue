@@ -15,7 +15,6 @@ div.vue-form-generator(v-if='schema != null')
 import { get as objGet, forEach, isFunction, isNil, isArray } from "lodash";
 import formMixin from "./formMixin.js";
 import formGroup from "./formGroup.vue";
-import {vueSet, vueDelete} from "./utils/vueUtils";
 
 export default {
 	name: "formGenerator",
@@ -74,6 +73,7 @@ export default {
 					if (!this.multiple || field.multi === true) res.push(field);
 				});
 			}
+
 			return res;
 		},
 		groups() {
@@ -124,26 +124,11 @@ export default {
 	methods: {
 		// Get visible prop of field
 		fieldVisible(field) {
-			let visible = field.visible;
+			if (isFunction(field.visible)) return field.visible.call(this, this.model, field, this);
 
-			if (isFunction(field.visible)) {
-				visible = field.visible.call(this, this.model, field, this);
-			}
+			if (isNil(field.visible)) return true;
 
-			if (isNil(field.visible)) {
-				visible = true;
-			}
-			if (visible) {
-				if (("initial" in field)) {
-					// if function, set the initial always. Otherwise only set if we don't have the field.model in model
-					if (isFunction(field.initial)) {
-						vueSet(this.model, field.model, field.initial.call(this, this.model, field, this));
-					} else if (objGet(this.model, field.model) === undefined) {
-						vueSet(this.model, field.model, field.initial);
-					}
-				}
-			}
-			return visible;
+			return field.visible;
 		},
 
 		// Child field executed validation

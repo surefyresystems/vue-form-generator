@@ -1,6 +1,7 @@
 import { get as objGet, forEach, isFunction, isString, isArray, debounce, uniqueId, uniq as arrayUniq } from "lodash";
 import validators from "../utils/validators";
 import { slugifyFormID } from "../utils/schema";
+import {vueSet} from "../utils/vueUtils";
 
 function convertValidator(validator) {
 	if (isString(validator)) {
@@ -26,7 +27,9 @@ function attributesDirective(el, binding, vnode) {
 
 export default {
 	props: ["vfg", "model", "schema", "formOptions", "disabled"],
-
+	created() {
+		this.setInitial();
+	},
 	data() {
 		return {
 			errors: [],
@@ -72,6 +75,12 @@ export default {
 	},
 
 	methods: {
+		setInitial() {
+			// on created, the field is shown and we set back the initial if the field.model key is no in the model obj
+			if (("initial" in this.schema && (objGet(this.model, this.schema.model) === undefined))) {
+				vueSet(this.model, this.schema.model, this.schema.initial);
+			}
+		},
 		validate(calledParent) {
 			this.clearValidationErrors();
 			let validateAsync = objGet(this.formOptions, "validateAsync", false);

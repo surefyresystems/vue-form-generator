@@ -112,6 +112,7 @@ export default {
 		if (!this.$root.$options.components["multiselect"]) {
 			console.error("'vue-multiselect' is missing. Please download from https://github.com/monterail/vue-multiselect and register the component globally!");
 		}
+		this.setInitial();
 	}
 };
 </script>
