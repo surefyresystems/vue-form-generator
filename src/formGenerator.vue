@@ -134,11 +134,15 @@ export default {
 				visible = true;
 			}
 			if (visible) {
-				if (("initial" in field) && (objGet(this.model, field.model) === undefined)) {
-					vueSet(this.model, field.model, field.initial);
+				if (("initial" in field)) {
+					// if function, set the initial always. Otherwise only set if we don't have the field.model in model
+					if (isFunction(field.initial)) {
+						vueSet(this.model, field.model, field.initial.call(this, this.model, field, this));
+					} else if (objGet(this.model, field.model) === undefined) {
+						vueSet(this.model, field.model, field.initial);
+					}
 				}
 			}
-
 			return visible;
 		},
 
