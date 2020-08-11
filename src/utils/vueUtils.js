@@ -16,13 +16,7 @@ function toPath(pathString) {
 	let pathArray = [];
 
 	pathString.replace(pathRx, (match, number, quote, string) => {
-		pathArray.push(
-			quote
-				? string
-				: number !== undefined
-				? Number(number)
-				: match
-		);
+		pathArray.push(quote ? string : number !== undefined ? Number(number) : match);
 		return pathArray[pathArray.length - 1];
 	});
 	return pathArray;
