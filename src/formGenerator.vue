@@ -12,7 +12,7 @@ div.vue-form-generator(v-if='schema != null')
 </template>
 
 <script>
-import { get as objGet, forEach, isFunction, isNil, isArray } from "lodash";
+import { get as objGet, forEach, isFunction, isNil, isArray, has } from "lodash";
 import formMixin from "./formMixin.js";
 import formGroup from "./formGroup.vue";
 import {vueSet, vueDelete} from "./utils/vueUtils";
@@ -140,9 +140,9 @@ export default {
 				if (!visible) {
 					vueDelete(this.model, field.model);
 				}
-				else if (visible && field.initial) {
+				else if (visible && has(field, "initial")) {
 					// if field model doesn't exist in the model, update the initial
-					if (!(objGet(this.model, field.model, false))) {
+					if (!(has(this.model, field.model))) {
 						vueSet(this.model, field.model, field.initial);
 					}
 				}
