@@ -3,7 +3,9 @@
 		<h1>Basic</h1>
 		<div class="row">
 			<div class="col-sm-12">
-				<vue-form-generator :schema="schema" :model="model" :options="formOptions" ref="form" :is-new-model="isNewModel" @model-updated="modelUpdated" @validated="onValidated"></vue-form-generator>
+				<vue-form-generator :schema="schema" :model="model" :options="formOptions" ref="form"
+									:is-new-model="isNewModel" @model-updated="modelUpdated"
+									@validated="onValidated"></vue-form-generator>
 			</div>
 		</div>
 		<div class="row">
@@ -32,64 +34,55 @@ export default {
 				status: true
 			},
 
-			schema: {
-				fields: [
+			"schema": {
+				"groups": [
 					{
-						type: "input",
-						inputType: "text",
-						label: "First Name",
-						model: "first_name",
-						attributes: {
-							input: {
-								"data-toggle": "tooltip"
+						"id": "d57f4000-dbed-11ea-9715-830797583396",
+						"fields": [
+							{
+								"id": "d7ffd060-dbed-11ea-9715-830797583396",
+								"type": "switch",
+								"label": "visibility",
+								"model": "visibility",
+								"textOn": "Yes",
+								"textOff": "No",
+								"valueOn": true,
+								"required": false,
+								"valueOff": false
 							},
-							wrapper: {
-								"data-target": "input"
+							{
+								"id": "e167a6a1-dbed-11ea-9715-830797583396",
+								"type": "input",
+								"label": "Text ",
+								"model": "complex.test",
+								"visible": (model) => !model['visibility'],
+								"inputType": "text",
+								"autocomplete": "off"
+							},
+							{
+								"id": "e167a6a1-dbed-11ea-9715-830797583396",
+								"type": "input",
+								"label": "Text ",
+								"model": "complex.name",
+								"visible": (model) => !model['visibility'],
+								"inputType": "text",
+								"autocomplete": "off"
+							},
+							{
+								"id": "ee0e5431-dbed-11ea-9715-830797583396",
+								"type": "checkbox",
+								"label": "Checkbox ",
+								"model": "Checkbox",
+								"visible": (model) => !model['visibility'],
 							}
-						}
-					},
-					{
-						type: "checkbox",
-						label: "Active",
-						model: "status",
-						attributes: {
-							input: {
-								"data-toggle": "tooltip"
-							}
-						}
-					},
-					{
-						type: "input",
-						inputType: "color",
-						label: "Color",
-						model: "color",
-						attributes: {
-							input: {
-								"data-target": "tooltip"
-							}
-						}
-					},
-					{
-						type: "submit",
-						buttonText: "Change Previous Type",
-						attributes: {
-							input: {
-								"data-target": "toggle"
-							}
-						},
-						onSubmit: () => {
-							// this.schema.fields[2].type = "input";
-							if (this.schema.fields[2].inputType === "color") {
-								this.schema.fields[2].inputType = "text";
-							} else {
-								this.schema.fields[2].inputType = "color";
-							}
-						}
+						],
+						"styleClasses": "col-md"
 					}
 				]
 			},
 
 			formOptions: {
+				deleteDataOnHide: true,
 				validateAfterLoad: true,
 				validateAfterChanged: true,
 				validateBeforeSave: true
@@ -105,16 +98,16 @@ export default {
 		},
 
 		onValidated(res, errors) {
-			console.log("VFG validated:", res, errors);
+			//console.log("VFG validated:", res, errors);
 		},
 
 		modelUpdated(newVal, schema) {
-			console.log("main model has updated", newVal, schema);
+			//console.log("main model has updated", newVal, schema);
 		}
 	},
 
 	mounted() {
-		this.$nextTick(function() {
+		this.$nextTick(function () {
 			window.app = this;
 		});
 	}
