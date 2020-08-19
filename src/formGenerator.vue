@@ -145,7 +145,7 @@ export default {
 					// if field model doesn't exist in the model, update the initial
 					if (!(has(this.model, field.model))) {
 						console.warn(field.initial);
-						set(this.model, field.model, cloneDeep(field.initial));
+						vueSet(this.model, field.model, cloneDeep(field.initial));
 					}
 				}
 			}
