@@ -38,14 +38,3 @@ export function vueSet(obj, path, value) {
 	vueSet(obj[prop], fields, value);
 }
 
-export function vueDelete(obj, path) {
-	let fields = Array.isArray(path) ? path : toPath(path);
-	let prop = fields.shift();
-
-	return Vue.delete(obj, prop);
-
-
-}
-
-
-

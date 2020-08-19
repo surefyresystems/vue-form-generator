@@ -12,7 +12,7 @@ div.vue-form-generator(v-if='schema != null')
 </template>
 
 <script>
-import { get as objGet, forEach, isFunction, isNil, isArray, has, cloneDeep } from "lodash";
+import { get as objGet, forEach, isFunction, isNil, isArray, has, cloneDeep, set } from "lodash";
 import formMixin from "./formMixin.js";
 import formGroup from "./formGroup.vue";
 import {vueSet, vueDelete} from "./utils/vueUtils";
@@ -138,12 +138,14 @@ export default {
 			// 2. if became visible and we have an initial, we can set that initial back if the field not in model
 			if (this.options.deleteDataOnHide) {
 				if (!visible) {
-					vueDelete(this.model, field.model);
+					//vueDelete(this.model, field.model);
+					this.$delete(this.model, field.model);
 				}
 				else if (visible && has(field, "initial")) {
 					// if field model doesn't exist in the model, update the initial
 					if (!(has(this.model, field.model))) {
-						vueSet(this.model, field.model, cloneDeep(field.initial));
+						console.warn(field.initial);
+						set(this.model, field.model, cloneDeep(field.initial));
 					}
 				}
 			}
