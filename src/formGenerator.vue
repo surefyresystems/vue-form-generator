@@ -144,8 +144,7 @@ export default {
 				else if (visible && has(field, "initial")) {
 					// if field model doesn't exist in the model, update the initial
 					if (!(has(this.model, field.model))) {
-						console.warn(field.initial);
-						vueSet(this.model, field.model, cloneDeep(field.initial));
+						this.$set(this.model, field.model, cloneDeep(field.initial));
 					}
 				}
 			}
