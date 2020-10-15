@@ -202,12 +202,28 @@ export default {
 						o = o[k];
 					} else {
 						// Create missing property (new level)
-						this.$root.$set(o, k, {});
+						if (this.$store) {
+							this.$store.commit("applicationForm/updateModel", {
+							key: k,
+							value: {}
+						});
+						} else {
+
+							this.$root.$set(o, k, {});
+
+						}
 						o = o[k];
 					}
 				else {
 					// Set final property value
-					this.$root.$set(o, k, value);
+					if (this.$store) {
+						this.$store.commit("applicationForm/updateModel", {
+							key: k,
+							value: value
+						});
+					} else {
+						this.$root.$set(o, k, value);
+					}
 					return;
 				}
 
