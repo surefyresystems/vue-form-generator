@@ -202,23 +202,24 @@ export default {
 						o = o[k];
 					} else {
 						// Create missing property (new level)
-						if (this.$store) {
-							this.$store.commit("applicationForm/updateModel", {
-							key: k,
-							value: {}
-						});
+
+						if (this.$store && this.formOptions.useStore) {
+							// formOptions to not use the store, (default not using the store)
+							// for appForm, set default to use the store.
+						// 	this.$store.commit("applicationForm/updateModel", {
+						// 	key: k,
+						// 	value: {}
+						// });
 						} else {
-
 							this.$root.$set(o, k, {});
-
 						}
 						o = o[k];
 					}
 				else {
 					// Set final property value
-					if (this.$store) {
+					if (this.$store && this.formOptions.useStore) {
 						this.$store.commit("applicationForm/updateModel", {
-							key: k,
+							key: s,
 							value: value
 						});
 					} else {
