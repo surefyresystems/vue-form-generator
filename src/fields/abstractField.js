@@ -202,15 +202,8 @@ export default {
 						o = o[k];
 					} else {
 						// Create missing property (new level)
-
-						if (this.$store && this.formOptions.useStore) {
-							// formOptions to not use the store, (default not using the store)
-							// for appForm, set default to use the store.
-						// 	this.$store.commit("applicationForm/updateModel", {
-						// 	key: k,
-						// 	value: {}
-						// });
-						} else {
+						if (!objGet(this.formOptions, "useStore", false)) {
+							// If not using a store, set the model as usual
 							this.$root.$set(o, k, {});
 						}
 						o = o[k];
