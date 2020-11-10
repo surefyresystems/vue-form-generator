@@ -32,7 +32,8 @@ export default {
 			errors: [],
 			debouncedValidateFunc: null,
 			debouncedFormatFunc: null,
-			modelChanged: false // if the model has changed, set the dirty bit to true
+			modelChanged: false, // if the model has changed, set the dirty bit to true,
+			validatedOnce: false,
 		};
 	},
 
@@ -74,6 +75,7 @@ export default {
 	methods: {
 		validate(calledParent) {
 			this.clearValidationErrors();
+
 			let validateAsync = objGet(this.formOptions, "validateAsync", false);
 
 			let results = [];
@@ -122,6 +124,13 @@ export default {
 				}
 
 				let isValid = fieldErrors.length === 0;
+
+				if (isValid) {
+					this.validatedOnce = false;
+				} else {
+					this.validatedOnce = true;
+				}
+
 				if (!calledParent) {
 					this.$emit("validated", isValid, fieldErrors, this);
 				}
@@ -167,6 +176,16 @@ export default {
 
 				if (isFunction(this.schema.onChanged)) {
 					this.schema.onChanged.call(this, this.model, newValue, oldValue, this.schema);
+				}
+
+				if (objGet(this.formOptions, "validateAfterNext", false) === true) {
+					if (this.validatedOnce) {
+						if (objGet(this.schema, "validateDebounceTime", objGet(this.formOptions, "validateDebounceTime", 0)) > 0) {
+							this.debouncedValidate();
+						} else {
+							this.validate();
+						}
+					}
 				}
 
 				if (objGet(this.formOptions, "validateAfterChanged", false) === true) {
