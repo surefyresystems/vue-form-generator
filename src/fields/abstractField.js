@@ -37,32 +37,7 @@ function attributesDirective(el, binding, vnode) {
 export default {
 	props: ["vfg", "model", "schema", "formOptions", "disabled"],
 	beforeDestroy() {
-		let field = this.schema;
-		let visible = field.visible;
-
-		if (isFunction(field.visible)) {
-			visible = field.visible.call(this, this.model, field, this);
-		}
-
-		if (isNil(field.visible)) {
-			visible = true;
-		}
-		// if the schema formOptions includes a deleteDataOnHide attribute:
-		// 1. we check if visibility became false on the field. If so, delete the model from that field
-		// 2. if became visible and we have an initial, we can set that initial back if the field not in model
-		if (this.options.deleteDataOnHide) {
-			if (!visible) {
-				//vueDelete(this.model, field.model);
-				this.$set(this.model, field.model, null);
-			} else if (visible && has(field, "initial")) {
-				// if field model doesn't exist in the model, update the initial
-				if (!(has(this.model, field.model))) {
-					this.$set(this.model, field.model, cloneDeep(field.initial));
-				}
-			}
-		}
-
-		return visible;
+		this.deleteDataOnHide();
 	},
 	data() {
 		return {
@@ -109,6 +84,34 @@ export default {
 	},
 
 	methods: {
+		deleteDataOnHide() {
+			let field = this.schema;
+			let visible = field.visible;
+
+			if (isFunction(field.visible)) {
+				visible = field.visible.call(this, this.model, field, this);
+			}
+
+			if (isNil(field.visible)) {
+				visible = true;
+			}
+			// if the schema formOptions includes a deleteDataOnHide attribute:
+			// 1. we check if visibility became false on the field. If so, delete the model from that field
+			// 2. if became visible and we have an initial, we can set that initial back if the field not in model
+			if (this.formOptions.deleteDataOnHide) {
+				if (!visible) {
+					//vueDelete(this.model, field.model);
+					this.$set(this.model, field.model, null);
+				} else if (visible && has(field, "initial")) {
+					// if field model doesn't exist in the model, update the initial
+					if (!(has(this.model, field.model))) {
+						this.$set(this.model, field.model, cloneDeep(field.initial));
+					}
+				}
+			}
+
+			return visible;
+		},
 		validate(calledParent) {
 			this.clearValidationErrors();
 			let validateAsync = objGet(this.formOptions, "validateAsync", false);
