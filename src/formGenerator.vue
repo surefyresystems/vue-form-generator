@@ -12,10 +12,9 @@ div.vue-form-generator(v-if='schema != null')
 </template>
 
 <script>
-import { get as objGet, forEach, isFunction, isNil, isArray, has, cloneDeep, set } from "lodash";
+import { get as objGet, forEach, isFunction, isNil, isArray } from "lodash";
 import formMixin from "./formMixin.js";
 import formGroup from "./formGroup.vue";
-import {vueSet, vueDelete} from "./utils/vueUtils";
 
 export default {
 	name: "formGenerator",
@@ -74,6 +73,7 @@ export default {
 					if (!this.multiple || field.multi === true) res.push(field);
 				});
 			}
+
 			return res;
 		},
 		groups() {
@@ -124,32 +124,11 @@ export default {
 	methods: {
 		// Get visible prop of field
 		fieldVisible(field) {
-			let visible = field.visible;
+			if (isFunction(field.visible)) return field.visible.call(this, this.model, field, this);
 
-			if (isFunction(field.visible)) {
-				visible = field.visible.call(this, this.model, field, this);
-			}
+			if (isNil(field.visible)) return true;
 
-			if (isNil(field.visible)) {
-				visible = true;
-			}
-			// if the schema formOptions includes a deleteDataOnHide attribute:
-			// 1. we check if visibility became false on the field. If so, delete the model from that field
-			// 2. if became visible and we have an initial, we can set that initial back if the field not in model
-			if (this.options.deleteDataOnHide) {
-				if (!visible) {
-					//vueDelete(this.model, field.model);
-					this.$delete(this.model, field.model);
-				}
-				else if (visible && has(field, "initial")) {
-					// if field model doesn't exist in the model, update the initial
-					if (!(has(this.model, field.model))) {
-						this.$set(this.model, field.model, cloneDeep(field.initial));
-					}
-				}
-			}
-
-			return visible;
+			return field.visible;
 		},
 
 		// Child field executed validation
