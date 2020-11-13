@@ -35,7 +35,7 @@ $field-switch-width: 120px;
 $field-switch-height: 30px;
 
 .vue-form-generator .field-switch {
-	.field-wrap .switch-label {
+	.switch-label {
 		position: relative;
 		display: block;
 		width: $field-switch-width;

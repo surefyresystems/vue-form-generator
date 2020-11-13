@@ -24,6 +24,10 @@ export default {
 				baseClasses["field-" + field.type] = true;
 			}
 
+			if(field.type === "checkbox") {
+				baseClasses["form-check"] = true;
+			}
+
 			return baseClasses;
 		},
 		fieldErrors(field) {

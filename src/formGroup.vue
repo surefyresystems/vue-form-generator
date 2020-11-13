@@ -6,10 +6,10 @@
 			:field="field"
 		>
 		</form-label>
+		<!-- If there are buttons the component will be shown as part of input-group below -->
+		<component v-if="!buttonVisibility(field)" ref="child" :is="getFieldType(field)" :vfg="vfg" :class="{'is-invalid': fieldErrors(field).length > 0}" :disabled="fieldDisabled(field)" :model="model" :schema="field" :formOptions="options" @model-updated="onModelUpdated" @validated="onFieldValidated"></component>
 
-		<component ref="child" :is="getFieldType(field)" :vfg="vfg" :class="{'is-invalid': fieldErrors(field).length > 0}" :disabled="fieldDisabled(field)" :model="model" :schema="field" :formOptions="options" @model-updated="onModelUpdated" @validated="onFieldValidated"></component>
-
-		<!-- Some components the label comes after the input field -->
+		<!-- Some components (checkbox) the label comes after the input field -->
 		<form-label
 			v-if="fieldTypeHasLabel(field) && !labelFirst(field)"
 			:fieldId="getFieldID(field)"
@@ -17,15 +17,19 @@
 		>
 		</form-label>
 
-		<div v-if="buttonVisibility(field)" class="buttons">
-			<button v-for="(btn, index) in field.buttons" @click="buttonClickHandler(btn, field, $event)" :class="btn.classes" :key="index" v-text="btn.label" :type="getButtonType(btn)"></button>
+		<div v-if="buttonVisibility(field)" class="input-group">
+			<component ref="child" :is="getFieldType(field)" :vfg="vfg" :class="{'is-invalid': fieldErrors(field).length > 0}" :disabled="fieldDisabled(field)" :model="model" :schema="field" :formOptions="options" @model-updated="onModelUpdated" @validated="onFieldValidated"></component>
+			<div class="input-group-append">
+				<button v-for="(btn, index) in field.buttons" @click="buttonClickHandler(btn, field, $event)" :class="getButtonClass(btn)" :key="index" v-text="btn.label" :type="getButtonType(btn)"></button>
+			</div>
 		</div>
 
-		<div v-if="fieldErrors(field).length > 0" class="invalid-feedback">
+		<!-- Mark invalid feedback and always show (d-block makes sure it will always show)-->
+		<div v-if="fieldErrors(field).length > 0" class="invalid-feedback d-block">
 			<span v-for="(error, index) in fieldErrors(field)" :key="index" v-html="error"></span>
 		</div>
 
-		<small v-if="field.hint" class="form-text text-muted" v-html="fieldHint(field)"></small>
+		<small v-if="field.hint" class="mt-0 form-text text-muted" v-html="fieldHint(field)"></small>
 	</div>
 </template>
 <script>
@@ -91,6 +95,12 @@ export default {
 		// Get type of button, default to 'button'
 		getButtonType(btn) {
 			return objGet(btn, "type", "button");
+		},
+		getButtonClass(btn){
+			if(btn.classes){
+				return btn.classes;
+			}
+			return "btn btn-outline-primary";
 		},
 		// Child field executed validation
 		onFieldValidated(res, errors, field) {

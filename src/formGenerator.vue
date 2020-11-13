@@ -222,10 +222,6 @@ export default {
 
 <style lang="scss">
 .vue-form-generator {
-	* {
-		box-sizing: border-box;
-	}
-
 	span.help {
 		margin-left: 0.3em;
 		position: relative;

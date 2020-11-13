@@ -1,8 +1,8 @@
 <template lang="pug">
 	.radio-list(:disabled="disabled", v-attributes="'wrapper'")
-		.form-check(v-for="item in items", :disabled="disabled", v-attributes="'wrapper'")
-			input.form-check-input(:id="getFieldID(schema, true)", type="radio", :disabled="isItemDisabled(item)", :name="id", @blur="onDataAccept", @click="onSelection(item)", :value="getItemValue(item)", :checked="isItemChecked(item)", :class="schema.fieldClasses", :required="schema.required", v-attributes="'input'")
-			label.form-check-label(:class="getItemCssClasses(item)", v-attributes="'label'")
+		.form-check(v-for="(item, index) in items", :disabled="disabled", v-attributes="'wrapper'")
+			input.form-check-input(:id="getRadioId(index)", type="radio", :disabled="isItemDisabled(item)", :name="id", @blur="onDataAccept", @click="onSelection(item)", :value="getItemValue(item)", :checked="isItemChecked(item)", :class="schema.fieldClasses", :required="schema.required", v-attributes="'input'")
+			label.form-check-label(:class="getItemCssClasses(item)", :for="getRadioId(index)", v-attributes="'label'")
 				| {{ getItemName(item) }}
 
 </template>
@@ -25,10 +25,14 @@ export default {
 		},
 		id() {
 			return this.schema.model;
-		}
+		},
 	},
 
 	methods: {
+		getRadioId(index){
+			return this.getFieldID(this.schema) + "-" + index;
+		},
+
 		getItemValue(item) {
 			if (isObject(item)) {
 				if (typeof this.schema["radiosOptions"] !== "undefined" && typeof this.schema["radiosOptions"]["value"] !== "undefined") {
@@ -61,6 +65,7 @@ export default {
 		},
 		getItemCssClasses(item) {
 			return {
+				"form-check-label": true,
 				"is-checked": this.isItemChecked(item),
 				"is-disabled": this.isItemDisabled(item)
 			};
