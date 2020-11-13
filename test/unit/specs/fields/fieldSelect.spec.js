@@ -56,7 +56,7 @@ describe("fieldSelect.vue", () => {
 			let options = input.findAll("option");
 
 			expect(options.at(0).attributes().disabled).to.be.undefined;
-			expect(options.at(0).text()).to.be.equal("<Nothing selected>");
+			expect(options.at(0).text()).to.be.equal("------");
 		});
 
 		it("should contain the value", () => {
@@ -93,7 +93,7 @@ describe("fieldSelect.vue", () => {
 			let options = input.findAll("option");
 
 			expect(options.at(0).attributes().disabled).to.be.equal("disabled");
-			expect(options.at(0).text()).to.be.equal("<Nothing selected>");
+			expect(options.at(0).text()).to.be.equal("------");
 		});
 
 		it("should show the customized <non selected> text", () => {

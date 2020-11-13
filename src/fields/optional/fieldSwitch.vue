@@ -1,5 +1,5 @@
 <template lang="pug">
-	label
+	label.switch-label
 		input(type="checkbox", v-model="value", @blur="onDataAccept", :autocomplete="schema.autocomplete", :disabled="disabled", :name="schema.inputName", :id="getFieldID(schema)")
 		span.label(:data-on="schema.textOn || 'On'", :data-off="schema.textOff || 'Off'", :for="getFieldID(schema)")
 		span.handle
@@ -35,7 +35,7 @@ $field-switch-width: 120px;
 $field-switch-height: 30px;
 
 .vue-form-generator .field-switch {
-	.field-wrap label {
+	.field-wrap .switch-label {
 		position: relative;
 		display: block;
 		width: $field-switch-width;

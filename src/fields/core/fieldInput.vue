@@ -1,5 +1,4 @@
 <template lang="pug">
-.wrapper(v-attributes="'wrapper'")
 	input.form-control(
 		:id="getFieldID(schema)",
 		:type="inputType",
@@ -38,7 +37,6 @@
 		:width="schema.width",
 		:files="schema.files"
 		v-attributes="'input'")
-	span.helper(v-if="schema.inputType.toLowerCase() === 'color'") {{ value }}
 </template>
 
 <script>

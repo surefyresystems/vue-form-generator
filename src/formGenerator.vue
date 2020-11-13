@@ -226,24 +226,6 @@ export default {
 		box-sizing: border-box;
 	}
 
-	.form-control {
-		// Default Bootstrap .form-control style
-		display: block;
-		&:not([class*=" col-"]) {
-			width: 100%;
-		}
-		padding: 6px 12px;
-		font-size: 14px;
-		line-height: 1.42857143;
-		color: #555;
-		background-color: #fff;
-		background-image: none;
-		border: 1px solid #ccc;
-		border-radius: 4px;
-		box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-		transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
-	} // .form-control
-
 	span.help {
 		margin-left: 0.3em;
 		position: relative;
@@ -299,62 +281,5 @@ export default {
 		}
 	} // span.help
 
-	.field-wrap {
-		display: flex;
-
-		.buttons {
-			white-space: nowrap;
-			margin-left: 4px;
-		}
-
-		button,
-		input[type="submit"] {
-			// Default Bootstrap button style
-			display: inline-block;
-			padding: 6px 12px;
-			margin: 0px;
-			font-size: 14px;
-			font-weight: normal;
-			line-height: 1.42857143;
-			text-align: center;
-			white-space: nowrap;
-			vertical-align: middle;
-			touch-action: manipulation;
-			cursor: pointer;
-			user-select: none;
-			color: #333;
-			background-color: #fff;
-			border: 1px solid #ccc;
-			border-radius: 4px;
-
-			&:not(:last-child) {
-				margin-right: 4px;
-			}
-
-			&:hover {
-				color: #333;
-				background-color: #e6e6e6;
-				border-color: #adadad;
-			}
-
-			&:active {
-				color: #333;
-				background-color: #d4d4d4;
-				border-color: #8c8c8c;
-				outline: 0;
-				box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-			}
-
-			&:disabled {
-				opacity: 0.6;
-				cursor: not-allowed;
-			}
-		} // button, input[submit]
-	} // .field-wrap
-
-	.hint {
-		font-style: italic;
-		font-size: 0.8em;
-	} // .hint
 } // fieldset
 </style>
