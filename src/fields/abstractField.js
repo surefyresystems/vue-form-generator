@@ -169,7 +169,7 @@ export default {
 					this.schema.onChanged.call(this, this.model, newValue, oldValue, this.schema);
 				}
 
-				if (objGet(this.formOptions, "validateAfterChanged", false) === true) {
+				if (objGet(this.formOptions, "validateAfterChanged", false) === true || (objGet(this.formOptions, "validateAfterFailure", false) === true && this.errors.length)) {
 					if (objGet(this.schema, "validateDebounceTime", objGet(this.formOptions, "validateDebounceTime", 0)) > 0) {
 						this.debouncedValidate();
 					} else {
