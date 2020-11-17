@@ -7,7 +7,7 @@ import {
 	debounce,
 	uniqueId,
 	uniq as arrayUniq,
-	isNil, has, cloneDeep
+	has, cloneDeep
 } from "lodash";
 import validators from "../utils/validators";
 import {isFieldVisible, slugifyFormID} from "../utils/schema";

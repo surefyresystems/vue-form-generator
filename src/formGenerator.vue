@@ -12,7 +12,7 @@ div.vue-form-generator(v-if='schema != null')
 </template>
 
 <script>
-import { get as objGet, forEach, isFunction, isNil, isArray } from "lodash";
+import { get as objGet, forEach, isFunction, isArray } from "lodash";
 import formMixin from "./formMixin.js";
 import formGroup from "./formGroup.vue";
 import {isFieldVisible} from "./utils/schema";
