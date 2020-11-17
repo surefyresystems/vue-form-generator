@@ -1,4 +1,4 @@
-import { get, set, each, isObject, isArray, isFunction, cloneDeep } from "lodash";
+import {get, set, each, isObject, isArray, isFunction, cloneDeep, isNil} from "lodash";
 
 // Create a new model by schema default values
 const createDefaultObject = (schema, obj = {}) => {
@@ -99,4 +99,18 @@ const slugify = (name = "") => {
 	);
 };
 
-export { createDefaultObject, getMultipleFields, mergeMultiObjectFields, slugifyFormID, slugify };
+const isFieldVisible = (field) => {
+	// Checks field visibility
+	let visible = field.visible;
+
+	if (isFunction(field.visible)) {
+		visible = field.visible.call(this, this.model, field, this);
+	}
+
+	if (isNil(field.visible)) {
+		visible = true;
+	}
+	return visible;
+};
+
+export { createDefaultObject, getMultipleFields, mergeMultiObjectFields, slugifyFormID, slugify, isFieldVisible };
