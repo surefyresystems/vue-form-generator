@@ -66,6 +66,7 @@ export default {
 	},
 
 	beforeDestroy() {
+		this.deleteDataOnHide();
 		if (this.cleave) {
 			this.cleave.destroy();
 			this.$el.removeEventListener("input", this.inputChange);

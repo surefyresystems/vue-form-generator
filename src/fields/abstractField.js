@@ -1,6 +1,16 @@
-import { get as objGet, forEach, isFunction, isString, isArray, debounce, uniqueId, uniq as arrayUniq } from "lodash";
+import {
+	get as objGet,
+	forEach,
+	isFunction,
+	isString,
+	isArray,
+	debounce,
+	uniqueId,
+	uniq as arrayUniq,
+	has, cloneDeep
+} from "lodash";
 import validators from "../utils/validators";
-import { slugifyFormID } from "../utils/schema";
+import {isFieldVisible, slugifyFormID} from "../utils/schema";
 
 function convertValidator(validator) {
 	if (isString(validator)) {
@@ -26,7 +36,9 @@ function attributesDirective(el, binding, vnode) {
 
 export default {
 	props: ["vfg", "model", "schema", "formOptions", "disabled"],
-
+	beforeDestroy() {
+		this.deleteDataOnHide();
+	},
 	data() {
 		return {
 			errors: [],
@@ -72,6 +84,26 @@ export default {
 	},
 
 	methods: {
+		deleteDataOnHide() {
+			let field = this.schema;
+			let visible = isFieldVisible(field);
+			// if the schema formOptions includes a deleteDataOnHide attribute:
+			// 1. we check if visibility became false on the field. If so, delete the model from that field
+			// 2. if became visible and we have an initial, we can set that initial back if the field not in model
+			if (this.formOptions.deleteDataOnHide) {
+				if (!visible && !field.keepOnHide) {
+					//vueDelete(this.model, field.model);
+					this.$set(this.model, field.model, null);
+				} else if (visible && has(field, "initial")) {
+					// if field model doesn't exist in the model, update the initial
+					if (!(has(this.model, field.model))) {
+						this.$set(this.model, field.model, cloneDeep(field.initial));
+					}
+				}
+			}
+
+			return visible;
+		},
 		validate(calledParent) {
 			this.clearValidationErrors();
 			let validateAsync = objGet(this.formOptions, "validateAsync", false);

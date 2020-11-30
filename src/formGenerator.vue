@@ -24,9 +24,10 @@
 </template>
 
 <script>
-import { get as objGet, forEach, isFunction, isNil, isArray } from "lodash";
+import { get as objGet, forEach, isFunction, isArray } from "lodash";
 import formMixin from "./formMixin.js";
 import formGroup from "./formGroup.vue";
+import {isFieldVisible} from "./utils/schema";
 
 export default {
 	name: "formGenerator",
@@ -136,11 +137,7 @@ export default {
 	methods: {
 		// Get visible prop of field
 		fieldVisible(field) {
-			if (isFunction(field.visible)) return field.visible.call(this, this.model, field, this);
-
-			if (isNil(field.visible)) return true;
-
-			return field.visible;
+			return isFieldVisible(field);
 		},
 
 		// Child field executed validation
