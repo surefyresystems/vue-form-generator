@@ -20,7 +20,7 @@
 		<div v-if="buttonVisibility(field)" class="input-group">
 			<component ref="child" :is="getFieldType(field)" :vfg="vfg" :class="{'is-invalid': fieldErrors(field).length > 0}" :disabled="fieldDisabled(field)" :model="model" :schema="field" :formOptions="options" @model-updated="onModelUpdated" @validated="onFieldValidated"></component>
 			<div class="input-group-append">
-				<button v-for="(btn, index) in field.buttons" @click="buttonClickHandler(btn, field, $event)" :class="getButtonClass(btn)" :key="index" v-text="btn.label" :type="getButtonType(btn)"></button>
+				<button v-for="(btn, index) in field.buttons" @click="buttonClickHandler(btn, field, $event)" :disabled="fieldDisabled(field)" :class="btn.classes" :key="index" v-text="btn.label" :type="getButtonType(btn)"></button>
 			</div>
 		</div>
 
