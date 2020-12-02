@@ -2,13 +2,13 @@
 div.vue-form-generator(v-if='schema != null')
 	fieldset(v-if="schema.fields", :is='tag')
 		template(v-for='field in fields')
-			form-group(v-if='fieldVisible(field)', :vfg="vfg", :field="field", :errors="errors", :model="model", :options="options", @validated="onFieldValidated", @model-updated="onModelUpdated")
+			form-group(v-if='fieldVisible(field)', :vfg="vfg", :field="field", :errors="errors", :model="model", :options="options", @hidden="onHidden" @validated="onFieldValidated", @model-updated="onModelUpdated")
 
 	template(v-for='group in groups')
 		fieldset(:is='tag', :class='getFieldRowClasses(group)')
 			legend(v-if='group.legend') {{ group.legend }}
 			template(v-for='field in group.fields')
-				form-group(v-if='fieldVisible(field)', :vfg="vfg", :field="field", :errors="errors", :model="model", :options="options", @validated="onFieldValidated", @model-updated="onModelUpdated")
+				form-group(v-if='fieldVisible(field)', :vfg="vfg", :field="field", :errors="errors", :model="model", :options="options", @hidden="onHidden" @validated="onFieldValidated", @model-updated="onModelUpdated")
 </template>
 
 <script>
@@ -121,11 +121,10 @@ export default {
 			}
 		});
 	},
-
 	methods: {
 		// Get visible prop of field
 		fieldVisible(field) {
-			return isFieldVisible(field);
+			return isFieldVisible(this.model, field, this);
 		},
 
 		// Child field executed validation
@@ -149,6 +148,10 @@ export default {
 
 		onModelUpdated(newVal, schema) {
 			this.$emit("model-updated", newVal, schema);
+		},
+
+		onHidden(payload) {
+			this.$emit("hidden", payload);
 		},
 
 		// Validating the model properties

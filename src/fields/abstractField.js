@@ -85,24 +85,20 @@ export default {
 
 	methods: {
 		deleteDataOnHide() {
+			// emits hidden event up with field, if should be deleted, if should set initial back, or if should keep on hide.
 			let field = this.schema;
-			let visible = isFieldVisible(field);
-			// if the schema formOptions includes a deleteDataOnHide attribute:
-			// 1. we check if visibility became false on the field. If so, delete the model from that field
-			// 2. if became visible and we have an initial, we can set that initial back if the field not in model
-			if (this.formOptions.deleteDataOnHide) {
-				if (!visible && !field.keepOnHide) {
-					//vueDelete(this.model, field.model);
-					this.$set(this.model, field.model, null);
-				} else if (visible && has(field, "initial")) {
-					// if field model doesn't exist in the model, update the initial
-					if (!(has(this.model, field.model))) {
-						this.$set(this.model, field.model, cloneDeep(field.initial));
-					}
-				}
+			let visible = isFieldVisible(this.model, field, this);
+
+			if (!this.formOptions.deleteDataOnHide) {
+				return false;
 			}
 
-			return visible;
+			this.$emit("hidden", {
+				field: field,
+				shouldDelete: this.formOptions.deleteDataOnHide && !visible,
+				shouldSetInitial: this.formOptions.deleteDataOnHide && visible && has(field, "initial"),
+				keepOnHide: field.keepOnHide
+			});
 		},
 		validate(calledParent) {
 			this.clearValidationErrors();

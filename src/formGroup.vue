@@ -9,7 +9,7 @@
 		</label>
 
 		<div class="field-wrap">
-			<component ref="child" :is="getFieldType(field)" :vfg="vfg" :disabled="fieldDisabled(field)" :model="model" :schema="field" :formOptions="options" @model-updated="onModelUpdated" @validated="onFieldValidated"></component>
+			<component ref="child" :is="getFieldType(field)" :vfg="vfg" :disabled="fieldDisabled(field)" :model="model" :schema="field" :formOptions="options" @hidden="onHidden" @model-updated="onModelUpdated" @validated="onFieldValidated"></component>
 			<div v-if="buttonVisibility(field)" class="buttons">
 				<button v-for="(btn, index) in field.buttons" @click="buttonClickHandler(btn, field, $event)" :class="btn.classes" :key="index" v-text="btn.label" :type="getButtonType(btn)"></button>
 			</div>
@@ -109,6 +109,9 @@ export default {
 		},
 		validate(calledParent) {
 			return this.$refs.child.validate(calledParent);
+		},
+		onHidden(payload) {
+			this.$emit("hidden", payload);
 		},
 		clearValidationErrors() {
 			if (this.$refs.child) {

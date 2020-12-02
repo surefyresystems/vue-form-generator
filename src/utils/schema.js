@@ -99,12 +99,11 @@ const slugify = (name = "") => {
 	);
 };
 
-const isFieldVisible = (field) => {
+const isFieldVisible = (model, field, vfg) => {
 	// Checks field visibility
 	let visible = field.visible;
-
 	if (isFunction(field.visible)) {
-		visible = field.visible.call(this, this.model, field, this);
+		visible = field.visible.call(this, model, field, vfg);
 	}
 
 	if (isNil(field.visible)) {
