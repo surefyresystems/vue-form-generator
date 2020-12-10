@@ -25,6 +25,7 @@ export default {
 
 	beforeDestroy() {
 		if (window.$ && window.$.fn.mask) $(this.$el).unmask();
+		this.visibilityChanged();
 	}
 };
 </script>

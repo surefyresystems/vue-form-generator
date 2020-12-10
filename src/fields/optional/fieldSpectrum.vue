@@ -54,6 +54,7 @@ export default {
 
 	beforeDestroy() {
 		if (this.picker) this.picker.spectrum("destroy");
+		this.visibilityChanged();
 	}
 };
 </script>

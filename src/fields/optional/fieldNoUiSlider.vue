@@ -94,6 +94,7 @@ export default {
 
 	beforeDestroy() {
 		if (this.slider) this.slider.noUiSlider.off("change");
+		this.visibilityChanged();
 	}
 };
 </script>

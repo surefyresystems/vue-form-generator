@@ -37,7 +37,7 @@ function attributesDirective(el, binding, vnode) {
 export default {
 	props: ["vfg", "model", "schema", "formOptions", "disabled"],
 	beforeDestroy() {
-		this.deleteDataOnHide();
+		this.visibilityChanged();
 	},
 	data() {
 		return {
@@ -84,20 +84,16 @@ export default {
 	},
 
 	methods: {
-		deleteDataOnHide() {
+		visibilityChanged() {
 			// emits hidden event up with field, if should be deleted, if should set initial back, or if should keep on hide.
 			let field = this.schema;
 			let visible = isFieldVisible(this.model, field, this);
 
-			if (!this.formOptions.deleteDataOnHide) {
-				return false;
-			}
+			// TODO: business logic in SurefyreForm
 
 			this.$emit("hidden", {
 				field: field,
-				shouldDelete: this.formOptions.deleteDataOnHide && !visible,
-				shouldSetInitial: this.formOptions.deleteDataOnHide && visible && has(field, "initial"),
-				keepOnHide: field.keepOnHide
+				visible: visible
 			});
 		},
 		validate(calledParent) {

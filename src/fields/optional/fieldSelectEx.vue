@@ -78,6 +78,7 @@ export default {
 
 	beforeDestroy() {
 		if ($.fn.selectpicker) $(this.$el).selectpicker("destroy");
+		this.visibilityChanged();
 	}
 };
 </script>
