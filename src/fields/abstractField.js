@@ -85,11 +85,9 @@ export default {
 
 	methods: {
 		visibilityChanged() {
-			// emits hidden event up with field, if should be deleted, if should set initial back, or if should keep on hide.
+			// emits hidden event up with field and it's current visibility.
 			let field = this.schema;
 			let visible = isFieldVisible(this.model, field, this);
-
-			// TODO: business logic in SurefyreForm
 
 			this.$emit("hidden", {
 				field: field,
