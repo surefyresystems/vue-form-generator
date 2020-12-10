@@ -35,7 +35,15 @@ function attributesDirective(el, binding, vnode) {
 
 export default {
 	props: ["vfg", "model", "schema", "formOptions", "disabled"],
+	/**
+	 * 	If created or beforeDestroy methods are overridden by custom fields, we need to make sure to call
+	 * 	this.visibilityChanged() on those overridden methods. Since we emit an event for every field,
+	 * 	we decided to add the logic here instead of FormGenerator for a cleaner approach.
+	 */
 	beforeDestroy() {
+		this.visibilityChanged();
+	},
+	created() {
 		this.visibilityChanged();
 	},
 	data() {
@@ -84,11 +92,11 @@ export default {
 
 	methods: {
 		visibilityChanged() {
-			// emits hidden event up with field and it's current visibility.
+			// emits visibility changed event up with field and it's current visibility.
 			let field = this.schema;
 			let visible = isFieldVisible(this.model, field, this);
 
-			this.$emit("hidden", {
+			this.$emit("visibility-changed", {
 				field: field,
 				visible: visible
 			});
