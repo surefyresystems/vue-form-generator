@@ -12,7 +12,7 @@ let inputFormat = "YYYY-MM-DD";
 export default {
 	mixins: [ abstractField ],
 	data() {
-		return { 
+		return {
 			picker: null,
 			options: null
 		};
@@ -54,6 +54,7 @@ export default {
 		if (this.picker) {
 			this.picker.destroy();
 		}
+		this.visibilityChanged();
 	}
 };
 </script>

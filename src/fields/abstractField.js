@@ -1,6 +1,15 @@
-import { get as objGet, forEach, isFunction, isString, isArray, debounce, uniqueId, uniq as arrayUniq } from "lodash";
+import {
+	get as objGet,
+	forEach,
+	isFunction,
+	isString,
+	isArray,
+	debounce,
+	uniqueId,
+	uniq as arrayUniq,
+} from "lodash";
 import validators from "../utils/validators";
-import { slugifyFormID } from "../utils/schema";
+import {isFieldVisible, slugifyFormID} from "../utils/schema";
 
 function convertValidator(validator) {
 	if (isString(validator)) {
@@ -26,7 +35,17 @@ function attributesDirective(el, binding, vnode) {
 
 export default {
 	props: ["vfg", "model", "schema", "formOptions", "disabled"],
-
+	/**
+	 * 	If created or beforeDestroy methods are overridden by custom fields, we need to make sure to call
+	 * 	this.visibilityChanged() on those overridden methods. Since we emit an event for every field,
+	 * 	we decided to add the logic here instead of FormGenerator for a cleaner approach.
+	 */
+	beforeDestroy() {
+		this.visibilityChanged();
+	},
+	created() {
+		this.visibilityChanged();
+	},
 	data() {
 		return {
 			errors: [],
@@ -72,6 +91,16 @@ export default {
 	},
 
 	methods: {
+		visibilityChanged() {
+			// emits visibility changed event up with field and it's current visibility.
+			let field = this.schema;
+			let visible = isFieldVisible(this.model, field, this);
+
+			this.$emit("visibility-changed", {
+				field: field,
+				visible: visible
+			});
+		},
 		validate(calledParent) {
 			this.clearValidationErrors();
 			let validateAsync = objGet(this.formOptions, "validateAsync", false);

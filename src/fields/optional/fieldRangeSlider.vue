@@ -70,6 +70,7 @@ export default {
 
 	beforeDestroy() {
 		if (this.slider) this.slider.destroy();
+		this.visibilityChanged();
 	}
 };
 </script>

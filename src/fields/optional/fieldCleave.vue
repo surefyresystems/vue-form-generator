@@ -70,6 +70,7 @@ export default {
 			this.cleave.destroy();
 			this.$el.removeEventListener("input", this.inputChange);
 		}
+		this.visibilityChanged();
 	}
 };
 </script>

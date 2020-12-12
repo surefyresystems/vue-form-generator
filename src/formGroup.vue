@@ -7,7 +7,7 @@
 		>
 		</form-label>
 		<!-- If there are buttons the component will be shown as part of input-group below -->
-		<component v-if="!buttonVisibility(field)" ref="child" :is="getFieldType(field)" :vfg="vfg" :class="{'is-invalid': fieldErrors(field).length > 0}" :disabled="fieldDisabled(field)" :model="model" :schema="field" :formOptions="options" @model-updated="onModelUpdated" @validated="onFieldValidated"></component>
+		<component v-if="!buttonVisibility(field)" ref="child" :is="getFieldType(field)" :vfg="vfg" :class="{'is-invalid': fieldErrors(field).length > 0}" :disabled="fieldDisabled(field)" :model="model" :schema="field" :formOptions="options" @visibility-changed="onVisibilityChanged" @model-updated="onModelUpdated" @validated="onFieldValidated"></component>
 
 		<!-- Some components (checkbox) the label comes after the input field -->
 		<form-label
@@ -126,6 +126,9 @@ export default {
 		},
 		validate(calledParent) {
 			return this.$refs.child.validate(calledParent);
+		},
+		onVisibilityChanged(payload) {
+			this.$emit("visibility-changed", payload);
 		},
 		clearValidationErrors() {
 			if (this.$refs.child) {

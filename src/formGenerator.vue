@@ -2,7 +2,7 @@
 	<div class="vue-form-generator" v-if="schema != null">
 		<fieldset v-if="schema.fields" :is="tag">
 			<template v-for="(field, index) in fields">
-				<form-group v-if="fieldVisible(field)" :key="index" :vfg="vfg" :field="field" :errors="errors" :model="model" :options="options" @validated="onFieldValidated" @model-updated="onModelUpdated">
+				<form-group v-if="fieldVisible(field)" :key="index" :vfg="vfg" :field="field" :errors="errors" :model="model" :options="options" @visibility-changed="onVisibilityChanged" @validated="onFieldValidated" @model-updated="onModelUpdated">
 				</form-group>
 			</template>
 		</fieldset>
@@ -13,7 +13,7 @@
 					{{group.legend}}
 				</legend>
 				<template v-for="(field, index) in group.fields">
-					<form-group v-if="fieldVisible(field)" :key="index" :vfg="vfg" :field="field" :errors="errors" :model="model" :options="options" @validated="onFieldValidated" @model-updated="onModelUpdated">
+					<form-group v-if="fieldVisible(field)" :key="index" :vfg="vfg" :field="field" :errors="errors" :model="model" :options="options" @visibility-changed="onVisibilityChanged" @validated="onFieldValidated" @model-updated="onModelUpdated">
 					</form-group>
 				</template>
 			</fieldset>
@@ -24,9 +24,10 @@
 </template>
 
 <script>
-import { get as objGet, forEach, isFunction, isNil, isArray } from "lodash";
+import { get as objGet, forEach, isFunction, isArray } from "lodash";
 import formMixin from "./formMixin.js";
 import formGroup from "./formGroup.vue";
+import {isFieldVisible} from "./utils/schema";
 
 export default {
 	name: "formGenerator",
@@ -132,15 +133,10 @@ export default {
 			}
 		});
 	},
-
 	methods: {
 		// Get visible prop of field
 		fieldVisible(field) {
-			if (isFunction(field.visible)) return field.visible.call(this, this.model, field, this);
-
-			if (isNil(field.visible)) return true;
-
-			return field.visible;
+			return isFieldVisible(this.model, field, this);
 		},
 
 		// Child field executed validation
@@ -164,6 +160,10 @@ export default {
 
 		onModelUpdated(newVal, schema) {
 			this.$emit("model-updated", newVal, schema);
+		},
+
+		onVisibilityChanged(payload) {
+			this.$emit("visibility-changed", payload);
 		},
 
 		// Validating the model properties

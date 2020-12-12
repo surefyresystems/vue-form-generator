@@ -52,6 +52,7 @@ export default {
 				.data("DateTimePicker")
 				.destroy();
 		}
+		this.visibilityChanged();
 	}
 };
 </script>
