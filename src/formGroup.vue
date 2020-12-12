@@ -1,25 +1,35 @@
 <template>
 	<div class="form-group" :class="getFieldRowClasses(field)">
-		<label v-if="fieldTypeHasLabel(field)" :for="getFieldID(field)" :class="field.labelClasses">
-			<span v-html="field.label"></span>
-			<span v-if='field.help' class="help">
-				<i class="icon"></i>
-				<div class="helpText" v-html='field.help'></div>
-			</span>
-		</label>
+		<form-label
+			v-if="fieldTypeHasLabel(field) && labelFirst(field)"
+			:fieldId="getFieldID(field)"
+			:field="field"
+		>
+		</form-label>
+		<!-- If there are buttons the component will be shown as part of input-group below -->
+		<component v-if="!buttonVisibility(field)" ref="child" :is="getFieldType(field)" :vfg="vfg" :class="{'is-invalid': fieldErrors(field).length > 0}" :disabled="fieldDisabled(field)" :model="model" :schema="field" :formOptions="options" @model-updated="onModelUpdated" @validated="onFieldValidated"></component>
 
-		<div class="field-wrap">
-			<component ref="child" :is="getFieldType(field)" :vfg="vfg" :disabled="fieldDisabled(field)" :model="model" :schema="field" :formOptions="options" @model-updated="onModelUpdated" @validated="onFieldValidated"></component>
-			<div v-if="buttonVisibility(field)" class="buttons">
+		<!-- Some components (checkbox) the label comes after the input field -->
+		<form-label
+			v-if="fieldTypeHasLabel(field) && !labelFirst(field)"
+			:fieldId="getFieldID(field)"
+			:field="field"
+		>
+		</form-label>
+
+		<div v-if="buttonVisibility(field)" class="input-group">
+			<component ref="child" :is="getFieldType(field)" :vfg="vfg" :class="{'is-invalid': fieldErrors(field).length > 0}" :disabled="fieldDisabled(field)" :model="model" :schema="field" :formOptions="options" @model-updated="onModelUpdated" @validated="onFieldValidated"></component>
+			<div class="input-group-append">
 				<button v-for="(btn, index) in field.buttons" @click="buttonClickHandler(btn, field, $event)" :disabled="!btn.overrideDisabled && fieldDisabled(field)" :class="btn.classes" :key="index" v-text="btn.label" :type="getButtonType(btn)"></button>
 			</div>
 		</div>
 
-		<div v-if="field.hint" class="hint" v-html="fieldHint(field)"></div>
-
-		<div v-if="fieldErrors(field).length > 0" class="errors help-block">
+		<!-- Mark invalid feedback and always show (d-block makes sure it will always show)-->
+		<div v-if="fieldErrors(field).length > 0" class="invalid-feedback d-block">
 			<span v-for="(error, index) in fieldErrors(field)" :key="index" v-html="error"></span>
 		</div>
+
+		<small v-if="field.hint" class="mt-0 form-text text-muted" v-html="fieldHint(field)"></small>
 	</div>
 </template>
 <script>
@@ -27,10 +37,11 @@ import { get as objGet, isNil, isFunction } from "lodash";
 import { slugifyFormID } from "./utils/schema";
 import formMixin from "./formMixin.js";
 import fieldComponents from "./utils/fieldsLoader.js";
+import formLabel from "./formLabel";
 
 export default {
 	name: "form-group",
-	components: fieldComponents,
+	components: {...fieldComponents, formLabel},
 	mixins: [formMixin],
 	props: {
 		vfg: {
@@ -85,6 +96,12 @@ export default {
 		getButtonType(btn) {
 			return objGet(btn, "type", "button");
 		},
+		getButtonClass(btn){
+			if(btn.classes){
+				return btn.classes;
+			}
+			return "btn btn-outline-primary";
+		},
 		// Child field executed validation
 		onFieldValidated(res, errors, field) {
 			this.$emit("validated", res, errors, field);
@@ -114,28 +131,19 @@ export default {
 			if (this.$refs.child) {
 				return this.$refs.child.clearValidationErrors();
 			}
+		},
+		labelFirst(field){
+			return field.type !== "checkbox";
 		}
 	}
 };
 </script>
 <style lang="scss">
 $errorColor: #f00;
-.form-group:not([class*=" col-"]) {
+.vue-form-generator .form-group:not([class*=" col-"]) {
 	width: 100%;
 }
-.form-group {
-	display: inline-block;
-	vertical-align: top;
-	// width: 100%;
-	// margin: 0.5rem 0.26rem;
-	margin-bottom: 1rem;
-
-	label {
-		font-weight: 400;
-		& > :first-child {
-			display: inline-block;
-		}
-	}
+.vue-form-generator .form-group {
 
 	&.featured {
 		> label {
@@ -151,36 +159,6 @@ $errorColor: #f00;
 			// position: absolute;
 			padding-left: 0.2em;
 			font-size: 1em;
-		}
-	}
-
-	&.disabled {
-		> label {
-			color: #666;
-			font-style: italic;
-		}
-	}
-
-	&.error {
-		input:not([type="checkbox"]),
-		textarea,
-		select {
-			border: 1px solid $errorColor;
-			background-color: rgba($errorColor, 0.15);
-		}
-
-		.errors {
-			color: $errorColor;
-			font-size: 0.8em;
-			span {
-				display: block;
-				background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAiklEQVR4Xt2TMQoCQQxF3xdhu72MpZU3GU/meBFLOztPYrVWsQmEWSaMsIXgK8P8RyYkMjO2sAN+K9gTIAmDAlzoUzE7p4IFytvDCQWJKSStYB2efcAvqZFM0BcstMx5naSDYFzfLhh/4SmRM+6Agw/xIX0tKEDFufeDNRUc4XqLRz3qabVIf3BMHwl6Ktexn3nmAAAAAElFTkSuQmCC");
-				background-repeat: no-repeat;
-				padding-left: 17px;
-				padding-top: 0px;
-				margin-top: 0.2em;
-				font-weight: 600;
-			}
 		}
 	}
 }

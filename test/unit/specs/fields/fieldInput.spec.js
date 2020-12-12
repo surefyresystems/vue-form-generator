@@ -136,16 +136,11 @@ describe("fieldInput.vue", () => {
 				}
 			};
 			let model = {};
-			let input, wrap;
+			let input;
 
 			before(() => {
 				createField2({ schema, model });
 				input = wrapper.find("input");
-				wrap = wrapper.find(".wrapper");
-			});
-
-			it("wrapper should have data-toggle attribute", () => {
-				expect(wrap.attributes()["data-toggle"]).to.be.equal("collapse");
 			});
 
 			it("input should have data-toggle attribute", () => {
